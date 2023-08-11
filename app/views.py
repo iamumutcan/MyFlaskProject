@@ -1,9 +1,15 @@
-from flask import Flask, render_template, redirect, url_for, request
-
+from flask import Flask, render_template, redirect, url_for, request, make_response
+from itsdangerous import Signer
 app = Flask(__name__)
 @app.route("/")
 def Definition():
-    return "Flask denemeesi"
+    # name=request.cookies.get('name')
+    # print('name',name)
+    signer=Signer("keyXXXX")
+    signed_name=signer.sign('Can')
+    response = make_response("Flask denemeesi")
+    response.set_cookie('name',signed_name)
+    return response
 
 @app.route("/hello")
 def Hello():
